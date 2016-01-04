@@ -1,0 +1,122 @@
+body, html {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: 'Roboto', helvetica, arial
+}
+
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-weight: inherit;
+    font-style: inherit;
+    vertical-align: baseline;
+}
+
+#map {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+}
+
+#search, aside {
+	position: fixed;
+}
+
+aside {
+	height: 100%;
+	width: 440px;
+	top: 0px;
+	background-color: white;
+	-webkit-transition: 0.3s;
+	transition: 0.3s;
+}
+
+#searchBackground {
+	background-color: #4285F4;
+	width: 100%;
+	height: 80px;
+}
+
+#search {
+	z-index: 2;
+	background-color: #ffffff;
+	border-radius: 2px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	margin: 15px;
+}
+
+#opener {
+	position: absolute;
+	right: -20px;
+	top: 20px;
+	width: 20px;
+	height: 40px;
+	background-color: #ffffff;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	cursor: pointer;
+}
+
+#searchWrap {
+	width: 400px;
+	height: 50px;
+}
+
+#bar {
+	position: relative;
+	width: 280px;
+	height: 40px;
+	text-align: center;
+	padding: 5px 80px 5px 40px
+}
+
+#bar input {
+	width: 100%;
+	height: 100%;
+	-webkit-appearance: none;
+	border: none;
+	font-size: 15px;
+	padding-left: 5px;
+}
+
+#bar input:focus {
+	outline: 0;
+}
+
+.asideOpen {
+	left: 0px;
+}
+
+.asideClose {
+	left: -440px;
+}
+
+/**********
+* = places
+***********/
+
+#results {
+	padding: 0;
+	margin: 0;
+}
+
+.place {
+	list-style: none;
+	border-bottom: solid 1px #000000;
+	margin: 0;
+	padding: 5px 10px;
+	cursor: pointer;
+}
+
+.placeTitle {
+	font-size: 20px;
+	font-weight: 600;
+}
+
+.placeAddress {
+	font-size: 14px;
+	color: #515151FF;
+}

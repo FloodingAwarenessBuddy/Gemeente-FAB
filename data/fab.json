@@ -1,0 +1,14 @@
+{
+	"Name" : "Fab-01234",
+	"Id" : "01234",
+	"location" : {
+		"lng" : 4.577971,
+		"lat" : 51.9376383
+	},
+	"address" : {
+		"City" : "Capelle aan den Ijssel",
+		"Number" : "7",
+		"Street" : "Capelseweg"
+	},
+	"Status" : "0"
+}
