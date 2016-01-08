@@ -19,16 +19,16 @@ USE `fab` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `fab`.`fab_location` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `lat` INT NOT NULL,
-  `lng` INT NOT NULL,
+  `lat` FLOAT NOT NULL,
+  `lng` FLOAT NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `fab`.`fab_adress`
+-- Table `fab`.`fab_address`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `fab`.`fab_adress` (
+CREATE TABLE IF NOT EXISTS `fab`.`fab_address` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `street` VARCHAR(80) NULL,
   `number` INT NULL,
@@ -50,7 +50,7 @@ ENGINE = InnoDB;
 -- Table `fab`.`fab_group`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `fab`.`fab_group` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NULL,
   `active` TINYINT(1) NULL DEFAULT 1,
   PRIMARY KEY (`id`))
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `fab`.`fab_user` (
   `password` VARCHAR(128) NOT NULL,
   `firstName` VARCHAR(60) NULL,
   `lastName` VARCHAR(60) NULL,
-  `creationDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creationDate` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   `adress_id` INT NOT NULL,
   `group_id` INT NOT NULL,
   `salt` VARCHAR(128) NULL,
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `fab`.`fab_user` (
   INDEX `fk_user_group1_idx` (`group_id` ASC),
   CONSTRAINT `fk_users_adress`
     FOREIGN KEY (`adress_id`)
-    REFERENCES `fab`.`fab_adress` (`id`)
+    REFERENCES `fab`.`fab_address` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_group1`
@@ -97,20 +97,13 @@ CREATE TABLE IF NOT EXISTS `fab`.`fab_fab` (
   `imgURL` VARCHAR(255) NULL,
   `creationDate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `adress_id` INT NOT NULL,
-  `location_id` INT NOT NULL,
   `group_id` INT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_fab_adress1_idx` (`adress_id` ASC),
-  INDEX `fk_fab_location1_idx` (`location_id` ASC),
   INDEX `fk_fab_group1_idx` (`group_id` ASC),
   CONSTRAINT `fk_fab_adress1`
     FOREIGN KEY (`adress_id`)
-    REFERENCES `fab`.`fab_adress` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_fab_location1`
-    FOREIGN KEY (`location_id`)
-    REFERENCES `fab`.`fab_location` (`id`)
+    REFERENCES `fab`.`fab_address` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_fab_group1`
@@ -157,8 +150,9 @@ ENGINE = InnoDB;
 -- Table `fab`.`fab_result`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `fab`.`fab_result` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `height` INT NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -177,13 +171,13 @@ ENGINE = InnoDB;
 -- Table `fab`.`fab_result_has_status`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `fab`.`fab_result_has_status` (
-  `results_id` INT NOT NULL,
+  `result_id` INT NOT NULL,
   `status_id` INT NOT NULL,
-  PRIMARY KEY (`results_id`, `status_id`),
+  PRIMARY KEY (`result_id`, `status_id`),
   INDEX `fk_results_has_status_status1_idx` (`status_id` ASC),
-  INDEX `fk_results_has_status_results1_idx` (`results_id` ASC),
+  INDEX `fk_results_has_status_results1_idx` (`result_id` ASC),
   CONSTRAINT `fk_results_has_status_results1`
-    FOREIGN KEY (`results_id`)
+    FOREIGN KEY (`result_id`)
     REFERENCES `fab`.`fab_result` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -273,6 +267,28 @@ CREATE TABLE IF NOT EXISTS `fab`.`fab_fabLog` (
   CONSTRAINT `fk_fabLog_type1`
     FOREIGN KEY (`type_id`)
     REFERENCES `fab`.`fab_type` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `fab`.`fab_user_has_fab_fab`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `fab`.`fab_user_has_fab_fab` (
+  `fab_user_id` INT NOT NULL,
+  `fab_fab_id` INT NOT NULL,
+  PRIMARY KEY (`fab_user_id`, `fab_fab_id`),
+  INDEX `fk_fab_user_has_fab_fab_fab_fab1_idx` (`fab_fab_id` ASC),
+  INDEX `fk_fab_user_has_fab_fab_fab_user1_idx` (`fab_user_id` ASC),
+  CONSTRAINT `fk_fab_user_has_fab_fab_fab_user1`
+    FOREIGN KEY (`fab_user_id`)
+    REFERENCES `fab`.`fab_user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_fab_user_has_fab_fab_fab_fab1`
+    FOREIGN KEY (`fab_fab_id`)
+    REFERENCES `fab`.`fab_fab` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

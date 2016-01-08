@@ -1,10 +1,12 @@
-function getLocation (address) {
+var fabs = [];
+
+function search (search) {
 	$.ajax({
 		url: 'includes/ajax.php',
 		method: 'POST',
 		data: {
-			address		: address,
-			funct		: 'getLocation'	
+			search		: search,
+			funct		: 'search'	
 		},
 	})
 	.done(function(output) {
@@ -21,7 +23,8 @@ function getLocation (address) {
 				.append($('<p>', {class: 'placeAddress', text: v.fullAdress}))
 				.on('click', function (e){
 					zoom($(this).data('lng'), $(this).data('lat'));
-					getFabs();}));
+					getFabs();
+					toggleOpen('close');}));
 		})
 	})
 	.fail(function(output) {
@@ -32,9 +35,6 @@ function getLocation (address) {
 function zoom(lng, lat) {
 	var location = new google.maps.LatLng(lat, lng);
 	map.setCenter(location);
-	$.getJSON("data/fab.json", function(data) {
-			placeMarker(data);
-		})
 }
 
 function getFabs() {
@@ -43,12 +43,22 @@ function getFabs() {
 		url: 'includes/ajax.php',
 		method: 'POST',
 		data: {
-			bounds		: bounds,
+			leftUpperBounds		: {"lat" : bounds.N.N, "lng" : bounds.j.N},
+			rightLowerBounds	: {"lat" : bounds.N.j, "lng" : bounds.j.j},
 			funct		: 'getFabs'	
 		},
+		dataType: 'json'
 	})
 	.done(function(output) {
-		output = $.parseJSON(output);
+		$.each(output, function(k,v) {
+			console.log(v);
+			var fabOutput = new fab(v);
+			fabOutput.placeMarker();
+			fabs.push(fabOutput);
+		})
+	})
+	.fail(function(output) {
+		console.log(output);
 	})
 }
 
@@ -57,64 +67,21 @@ function clearResults() {
 	results.empty();
 }
 
-function fab(data) {
-	this.lng 		= data.location.lng;
-	this.lat 		= data.location.lat;
-	this.address 	= data.address;
-	this.status 	= data.status;
-	this.name 		= data.name
-	this.results 	= $('#results');
-
-	this.placeMarker = function () {
-		var locationMarker = {lat: data.location.lat, lng: data.location.lng};
-		var marker = new google.maps.Marker({
-			position: locationMarker,
-			map: map,
-			title: "Fab-1234"
-		})
-
-		marker.addListener('click', function() {
-			toggleOpen('open');
-			clearResults();
-			results.append($('<p>', {text: this.status}))
-			results.append($('<p>', {text: "Adres: " + this.address.City + ' - ' + this.address.Street + ' - ' + this.address.Number}))
-		})
-	}
-
-	this.zoom = function () {
-		var location = new google.maps.LatLng(lat, lng);
-		map.setCenter(location);
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function placeMarker(data) {
 	var results = $('#results');
-	var locationMarker = {lat: data.location.lat, lng: data.location.lng};
+	var locationMarker = {lat: parseFloat(data.location.lat), lng: parseFloat(data.location.lng)};
 
 	var marker = new google.maps.Marker({
 		position: locationMarker,
 		map: map,
-		title: "Fab-1234"
+		title: data.name
 	})
 
 	marker.addListener('click', function() {
 		toggleOpen('open');
 		clearResults();
 		results.append($('<p>', {text: "Alles is in orde"}))
-		results.append($('<p>', {text: "Adres: " + data.address.City + ' - ' + data.address.Street + ' - ' + data.address.Number}))
+		results.append($('<p>', {text: "Adres: " + data.address.city + ' - ' + data.address.street + ' - ' + data.address.number}))
 	})
 }
 

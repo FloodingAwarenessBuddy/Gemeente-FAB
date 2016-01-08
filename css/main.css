@@ -6,20 +6,23 @@ body, html {
 	font-family: 'Roboto', helvetica, arial
 }
 
-html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-weight: inherit;
-    font-style: inherit;
-    vertical-align: baseline;
-}
-
 #map {
 	margin: 0;
 	padding: 0;
 	height: 100%;
 	width: 100%;
+	transition: all 1s ease-out;
+}
+
+.blur {
+	/* Any browser which supports CSS3 */
+    filter: blur(5px);
+
+    /* Webkit */
+    -webkit-filter: blur(5px);
+
+    /* Opera */
+    -o-filter: blur(5px);
 }
 
 #search, aside {
@@ -94,6 +97,10 @@ aside {
 	left: -440px;
 }
 
+.asideFullClose {
+	left: -460;
+}
+
 /**********
 * = places
 ***********/
@@ -119,4 +126,69 @@ aside {
 .placeAddress {
 	font-size: 14px;
 	color: #515151FF;
+}
+
+
+
+#login {
+	position: fixed;
+	top: 50%;
+	transform: translateY(-50%) translateX(-50%);
+	width: 400px;
+	background-color: #ffffff;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	left: 50%;
+}
+
+#loginInner {
+	margin: 50px;
+}
+
+#imagewrap {
+	width: 50%;
+	margin: 0 auto 20px auto;
+}
+
+#imagewrap img {
+	width: 100%;
+}
+
+.input {
+	width: 100%;
+	height: 100%;
+	font-size: 15px;
+	padding: 5px;
+	margin-bottom: 10px;
+}
+
+label {
+	font-weight: bold;
+}
+
+
+
+
+
+.fab {
+	padding: 10px;
+}
+
+.fab .title {
+	overflow: hidden;
+	font-size: 26px;
+	margin: 5px 0;
+	width: 100%;
+	border-bottom: 1px solid rgba(0,0,0,0.12)
+}
+
+.fab h3 {
+	margin: 3px 0;
+}
+
+.fab #address {
+	margin: 0;
+}
+
+#chart {
+	width: 100%;
 }

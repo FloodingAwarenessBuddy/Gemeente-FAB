@@ -1,19 +1,22 @@
 var map;
+var timer;
 
 function initMap() {
-	var myLatlng = new google.maps.LatLng(51.9301505, 4.5777053);
+	var myLatlng = new google.maps.LatLng(50.9301535, 4.5777053);
 
 	var mapOptions = {
 		zoom: 14,
+		minZoom: 11,
+		maxZoom: 17,
 		center: myLatlng,
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		disableDefaultUI: true,
-		scrollwheel: false,
 	    navigationControl: false,
 	    mapTypeControl: false,
 	    scaleControl: false,
 	};
 	map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
 }
 
 $(init);
@@ -22,15 +25,16 @@ function init() {
 	$('#opener').on('click', function () { toggleOpen('')});
 	$('#searchButton').on('click', function (){
 		var address = $('#address').val();
-		getLocation(address);
+		search(address);
 	});
 	$('#address').keypress(function (e) {
 		if (e.which == 13) {
-			console.log('test')
-	    	getLocation($(this).val());
+	    	search($(this).val());
 	  	}
 	});
 }
+
+
 
 function toggleOpen (condition) {
 	var aside = $('#menu');
@@ -45,6 +49,9 @@ function toggleOpen (condition) {
 		aside.addClass('asideClose');
 	} else if (aside.hasClass('asideClose')) {
 		aside.removeClass('asideClose');
+		aside.addClass('asideOpen');
+	} else {
+		aside.removeClass();
 		aside.addClass('asideOpen');
 	}
 }
