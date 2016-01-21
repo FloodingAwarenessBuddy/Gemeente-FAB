@@ -54,7 +54,7 @@ fab.prototype.createInfo = function () {
 							}
 						html += "</p></div><div id=\"status\">";
 						if(typeof fab.status[0] != 'undefined') {
-							html += '<h3>Status</h3><p>'+fab.message[fab.height-1]+'</p>';
+							html += '<h3>Status</h3><p id="statusMessage">'+fab.message[fab.height-1]+'</p>';
 						}
 						html +="</div><canvas id=\"chart\"></canvas></div></div>"
 	fab.results.html(html);
@@ -124,6 +124,7 @@ fab.prototype.liveInfo = function () {
 			date.push(v.date.fullDate);
 		});
 		if(fab.status[fab.status.length-1].date.fullDate != date[date.length-1]) {
+			$('#statusMessage').html(fab.message[parseInt(output[output.length-1].height-1)])
 			fab.status = output;
 			fab.createChart(height, date);
 		}
