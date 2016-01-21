@@ -24,7 +24,7 @@ session_start();
         
     </div>
     <?php if(isset($_SESSION['user'])){ ?>
-    <aside id="menu" <?=(!isset($_SESSION['user'])) ? 'class="asideFullClose"' : 'asideOpen' ?>>
+    <aside id="menu" class=<?=(!isset($_SESSION['user'])) ? '"asideFullClose"' : '"asideOpen"' ?>>
         <div id="search">
             <div id="searchWrap">
                 <div id="menuButton" class="">
