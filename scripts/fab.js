@@ -137,3 +137,8 @@ fab.prototype.zoom = function () {
 		var location = new google.maps.LatLng(lat, lng);
 		map.setCenter(location);
 	}
+
+fab.prototype.removeMarker = function () {
+	var fab = this;
+	fab.marker.setMap(null);
+}

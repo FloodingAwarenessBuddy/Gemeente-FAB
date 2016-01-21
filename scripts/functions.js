@@ -13,6 +13,7 @@ function search (search) {
 		output = $.parseJSON(output)
 		var results = $('#results');
 		clearResults();
+		clearFabs();
 		toggleOpen('open');
 		$.each(output, function(k,v){
 			results.append($('<li>', {class: 'place'})
@@ -64,6 +65,13 @@ function getFabs() {
 function clearResults() {
 	var results = $('#results');
 	results.empty();
+}
+
+function clearFabs() {
+	$.each(fabs, function(k,v) {
+		v.removeMarker();
+	})
+	fabs = [];
 }
 
 setInterval(function () {

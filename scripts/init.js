@@ -32,6 +32,13 @@ function init() {
 	    	search($(this).val());
 	  	}
 	});
+	$('#searchButton').click(function (e) {
+    	search($('#address').val());
+	});
+	$('#delete').click(function (e) {
+		$('#address').val('');
+		clearResults();
+	})
 }
 
 
