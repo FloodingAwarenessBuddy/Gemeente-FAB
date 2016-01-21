@@ -35,10 +35,10 @@ session_start();
                 </div>
                 <div id="searchOption">
                     <div id="delete">
-                        
+                        <i class="ion-close-round"></i>
                     </div>
                     <div id="searchButton">
-                        
+                        <i class="ion-search"></i>
                     </div>
                 </div>
             </div>

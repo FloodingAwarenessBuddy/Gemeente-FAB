@@ -68,12 +68,36 @@ aside {
 	height: 50px;
 }
 
+#searchOption {
+	float: right;
+	width: 80px;
+	height: 50px;
+}
+
+#delete, #searchButton {
+	width: 50%;
+	margin: 0;
+	padding: 0;
+	float: left;
+	height: 100%;
+	cursor: pointer;
+}
+
+#search i {
+	width: 100%;
+	text-align: center;
+	line-height: 56px;
+	font-size: 25px;
+	color: #CECBCB;
+}
+
 #bar {
 	position: relative;
 	width: 280px;
 	height: 40px;
 	text-align: center;
-	padding: 5px 80px 5px 40px
+	padding: 5px 0 5px 40px;
+	float: left;
 }
 
 #bar input {
