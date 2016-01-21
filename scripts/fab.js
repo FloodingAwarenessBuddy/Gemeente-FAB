@@ -54,7 +54,7 @@ fab.prototype.createInfo = function () {
 							}
 						html += "</p></div><div id=\"status\">";
 						if(typeof fab.status[0] != 'undefined') {
-							html += '<h3>Status</h3><p>'+fab.message[fab.height]+'</p>';
+							html += '<h3>Status</h3><p>'+fab.message[fab.height-1]+'</p>';
 						}
 						html +="</div><canvas id=\"chart\"></canvas></div></div>"
 	fab.results.html(html);
