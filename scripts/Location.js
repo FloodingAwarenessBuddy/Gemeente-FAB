@@ -12,7 +12,6 @@ function search (search) {
 	.done(function(output) {
 		output = $.parseJSON(output)
 		var results = $('#results');
-		console.log(output);
 		clearResults();
 		toggleOpen('open');
 		$.each(output, function(k,v){
@@ -43,16 +42,16 @@ function getFabs() {
 		url: 'includes/ajax.php',
 		method: 'POST',
 		data: {
-			leftUpperBounds		: {"lat" : bounds.N.N, "lng" : bounds.j.N},
-			rightLowerBounds	: {"lat" : bounds.N.j, "lng" : bounds.j.j},
+			leftUpperBounds		: {"lat" : bounds.R.R, "lng" : bounds.j.R},
+			rightLowerBounds	: {"lat" : bounds.R.j, "lng" : bounds.j.j},
 			funct		: 'getFabs'	
 		},
 		dataType: 'json'
 	})
 	.done(function(output) {
 		$.each(output, function(k,v) {
-			console.log(v);
 			var fabOutput = new fab(v);
+
 			fabOutput.placeMarker();
 			fabs.push(fabOutput);
 		})
@@ -67,21 +66,12 @@ function clearResults() {
 	results.empty();
 }
 
-function placeMarker(data) {
-	var results = $('#results');
-	var locationMarker = {lat: parseFloat(data.location.lat), lng: parseFloat(data.location.lng)};
-
-	var marker = new google.maps.Marker({
-		position: locationMarker,
-		map: map,
-		title: data.name
-	})
-
-	marker.addListener('click', function() {
-		toggleOpen('open');
-		clearResults();
-		results.append($('<p>', {text: "Alles is in orde"}))
-		results.append($('<p>', {text: "Adres: " + data.address.city + ' - ' + data.address.street + ' - ' + data.address.number}))
-	})
-}
+setInterval(function () {
+		if(fabs.length > 0)
+		{
+			$.each(fabs, function (k,v) {
+				v.liveInfo();
+			})
+		}
+	}, 3000)
 

@@ -31,6 +31,9 @@ switch($_POST['funct'])
 			$fab->createFab($_POST['address'], $_POST['location'], $_POST['name'],$_POST['imageURL'], $_SESSION['group']);
 		}
 		break;
+	case 'getStatus':
+		echo($fab->getStatus($_POST['id'], $conn));
+	break;
 }
 
 function error($msg) {
