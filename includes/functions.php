@@ -78,15 +78,35 @@ class fab
 		return $array;
 	}
 
-	public function createFab($address, $location, $name, $imgURL, $group) 
+	public function createFab($address, $name, $id, $conn) 
 	{
-		$query = "INSERT INTO ".PREFIX."user (username, email, password, firstName, lastName, adress_id, group_id)
-				VALUES (?, ?, ?, ?, ?, ?, ?)"; 
-	}
-
-	private function addAddress ($street, $city, $number, $postalCode, $country, $location) 
-	{
-
+		$query = "INSERT INTO fab_location (lat, lng) VALUES (?, ?)";
+		if ($stmt = $conn->prepare($query)) 
+		{
+			$stmt -> bind_param('ss', $address['location']['lat'], $address['location']['lng']);
+			$stmt -> execute();
+			if ($stmt)
+			{
+				$query = "INSERT INTO fab_address (street, number, city, postalCode, country, location_id) VALUES (?, ?, ?, ?, 'Nederland', (SELECT max(id) FROM fab_location))";
+				if ($stmt = $conn->prepare($query))
+				{
+					$stmt -> bind_param('ssss', $address['street'], $address['number'], $address['city'], $address['postalCode']);
+					$stmt -> execute();
+					if($stmt)
+					{
+						$query = "INSERT INTO fab_fab (name, address_id, group_id) VALUES (?, (SELECT max(id) FROM fab_address), 2)";
+						if ($stmt = $conn->prepare($query))
+						{
+							$stmt -> bind_param('s', $name);
+							$stmt -> execute();
+							$fab = $conn->query("SELECT max(id) as id FROM fab_fab")->fetch_assoc();
+							$this -> createDemoInfo(intval($fab['id']), $conn);
+							header('location: ../index.php');
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public function getStatus($id, $conn) 
@@ -128,6 +148,30 @@ class fab
 				'status' => $status]);
 		}
 		return json_encode($fabResultsArray);
+	}
+
+	public function createDemoInfo($id, $conn)
+	{
+		$rand = rand(1,3);
+		$sql = "INSERT INTO fab_result (height) VALUES ('$rand')";
+		if ($conn->query($sql) === TRUE) {
+			$sql = "INSERT INTO fab_fab_has_result (fab_id, results_id) VALUES ('$id', (SELECT fab_result.id FROM fab_result ORDER BY id DESC LIMIT 1))";
+			if ($conn->query($sql) === TRUE) {
+						$sql = "INSERT INTO fab_result_has_status (result_id, status_id) VALUES ((SELECT fab_result.id FROM fab_result ORDER BY id DESC LIMIT 1), 1)";
+				if ($conn->query($sql) === TRUE) {
+					echo "Record updated successfully";
+				} 
+				else {
+					echo "Error updating record: " . $conn->error;
+				}
+			} 
+			else {
+				echo "Error updating record: " . $conn->error;
+			}
+		} 
+		else {
+			echo "Error updating record: " . $conn->error;
+		}
 	}
 }
 

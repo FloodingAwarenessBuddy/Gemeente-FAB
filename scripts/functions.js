@@ -74,12 +74,28 @@ function clearFabs() {
 	fabs = [];
 }
 
+var rand = 10000;
+
 setInterval(function () {
-		if(fabs.length > 0)
-		{
-			$.each(fabs, function (k,v) {
-				v.liveInfo();
-			})
-		}
-	}, 3000)
+	if(fabs.length > 0)
+	{
+		$.each(fabs, function (k,v) {
+			v.liveInfo();
+		})
+	}
+}, 3000);
+
+setInterval(function () {
+	if(fabs.length > 0)
+	{
+		$.each(fabs, function (k,v) {
+			if (v.id != 1) {
+				v.createDemoInfo();
+				console.log(v)
+			}
+		})
+	}
+}, (Math.floor(Math.random() * 10000) + 30000));
+
+
 

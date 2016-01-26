@@ -3,7 +3,6 @@ require_once('functions.php');
 require_once('db_connect.php');
 
 $fab = new fab();
-// $search = new search();
 
 switch($_POST['funct']) 
 {
@@ -33,6 +32,9 @@ switch($_POST['funct'])
 		break;
 	case 'getStatus':
 		echo($fab->getStatus($_POST['id'], $conn));
+	break;
+	case 'createDemoInfo':
+		echo($fab->createDemoInfo($_POST['id'], $conn));
 	break;
 }
 

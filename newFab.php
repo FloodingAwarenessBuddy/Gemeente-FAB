@@ -1,6 +1,10 @@
 <?php  
 require_once('includes/settings.php');
 session_start();
+
+if (!isset($_SESSION['user'])) {
+    header('location: index.php');
+} 
 ?>
 
 <head>
@@ -20,61 +24,48 @@ session_start();
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 </head>
 <body>
-    <div id="map" <?=(!isset($_SESSION['user'])) ? 'class="blur"' : '' ?>>
-        
-    </div>
-    <?php if(isset($_SESSION['user'])){ ?>
-    <aside id="menu" class=<?=(!isset($_SESSION['user'])) ? '"asideFullClose"' : '"asideOpen"' ?>>
-        <div id="search">
-            <div id="searchWrap">
-                <div id="menuButton" class="">
-                    
-                </div>
-                <div id="bar">
-                    <input type="text" id="address" placeholder="Zoeken, Postcode, etc.">
-                </div>
-                <div id="searchOption">
-                    <div id="delete">
-                        <i class="ion-close-round"></i>
-                    </div>
-                    <div id="searchButton">
-                        <i class="ion-search"></i>
-                    </div>
-                </div>
-            </div>
-            <div id="searchResults">
-                
-            </div>
-        </div>
-        <div id="searchBackground">
-                
-        </div>
-        <div id="results">
-        
-        </div>
-        <div id="opener">
-            <i class="ion-arrow-left-b"></i>
-        </div>
-    </aside>
-    <?php } ?>
+    <div id="map" class="blur"></div>
 
-
-    <?php if(!isset($_SESSION['user'])){ ?>
     <div class="formBox">
         <div class="innerBox">
             <div id="imageWrap">
                 <img src="image/logo.png" alt="Logo">
             </div>
-            <form action="includes/login.php" method="POST">
-                <label for="username">Gebruikersnaam/Email:</label>
-                <input type="text" id="username" name="username" class="input">
-                <label for="username">Wachtwoord:</label>
-                <input type="password" id="password" name="password" class="input">
-                <input type="submit" value="Login" class="formButton">
+            <form action="includes/newFab.php" method="POST">
+                <div id="info">
+                    <label for="name">Fab name:</label>
+                    <input type="text" id="name" name="name">
+                    <label for="id">Alternatief Id:</label>
+                    <input type="text" id="id" name="id">
+                </div>
+                <div id="address">
+                    <label for="">Location:</label>
+                    <div id="location">
+                        <div class="locationInput">
+                            <input type="text" id="lat" name="lat" placeholder="Latitude">
+                        </div>
+                        <div class="locationInput">
+                            <input type="text" id="lng" name="lng" placeholder="Longitude">
+                        </div>
+                        <div class="locationInput" id="geolocation">
+                            <i class="ion-pinpoint"></i>
+                        </div>
+                    </div>
+                    <label for="">Straat:</label>
+                    <div id="streetWrap">
+                        <input type="text" name="street" placeholder="Bakkersweg" id="street">
+                        <input type="number" name="number" placeholder="31" id="number">
+                    </div>
+                    <label for="city">City</label>
+                    <input type="text" name="city" id="city" placeholder="Rotterdam">
+                    <label for="postalCode">Postcode</label>
+                    <input type="text" id="postalCode" name="postalCode" placeholder="3571 AM">
+                </div>
+                <input type="submit" value="Nieuw Fab" id="newFabButton">
             </form>
         </div>
     </div>
-    <?php } ?>
+
     <?php if(isset($_SESSION['user'])){ ?>
     <ul class="mfb-component--br mfb-zoomin" data-mfb-toggle="click" data-mfb-state="closed">
         <li class="mfb-component__wrap">
@@ -88,7 +79,7 @@ session_start();
             <ul class="mfb-component__list">
                 <!-- a child button, repeat as many times as needed -->
                 <li>
-                    <a href="newFab.php" data-mfb-label="Nieuw Fab" class="mfb-component__button--child">
+                    <a href="link.html" data-mfb-label="Nieuw Fab" class="mfb-component__button--child">
                         <i class="mfb-component__child-icon ion-plus"></i>
                     </a>
                 </li>
@@ -105,12 +96,10 @@ session_start();
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="scripts/init.js"></script>
-    <script src="scripts/fab.js"></script>
-    <script src="scripts/functions.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=<?=KEY?>&callback=initMap"></script>
+    <script src="scripts/location.js"></script>
     <script src="node_modules/mfb/src/mfb.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
-    <?php if(!isset($_SESSION['user'])){ ?>
     <script>
         timer = window.setInterval(rotate,100)
 
@@ -123,5 +112,4 @@ session_start();
             map.panBy(xRotate, yRotate);
         }
     </script>
-    <?php } ?>
 </body>

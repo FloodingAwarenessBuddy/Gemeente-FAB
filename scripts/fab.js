@@ -143,3 +143,19 @@ fab.prototype.removeMarker = function () {
 	var fab = this;
 	fab.marker.setMap(null);
 }
+
+fab.prototype.createDemoInfo = function () {
+	var fab = this;
+	$.ajax({
+		url: ' includes/ajax.php',
+		method: 'POST',
+		data: {
+			funct: 'createDemoInfo',
+			id: fab.id
+		}
+	}).done(function(output) {
+		console.log(output);
+	}).fail(function(output) {
+		console.log(output);
+	})
+}
